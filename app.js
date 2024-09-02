@@ -613,7 +613,72 @@ function loadUserData() {
 }
 
 
-window.addEventListener('resize', function() {
+
+// ... (código anterior sin cambios)
+
+// Funciones para manejar popups y botones flotantes
+function showPopup(popup) {
+    popup.style.display = 'block';
+  }
+  
+
+  
+  function toggleSubButtons() {
+    recordPaymentBtn.classList.toggle('show');
+    recordExpenseBtn.classList.toggle('show');
+  }
+  
+  // Obtener elementos del DOM
+  const mainActionBtn = document.getElementById('main-action-btn');
+  const recordPaymentBtn = document.getElementById('record-payment-btn');
+  const recordExpenseBtn = document.getElementById('record-expense-btn');
+  const paymentPopup = document.getElementById('payment-popup');
+  const expensePopup = document.getElementById('expense-popup');
+  const studentPaymentFormPopup = document.getElementById('studentPaymentForm');
+  const expenseRecordFormPopup = document.getElementById('expenseRecordForm');
+  
+  // Agregar event listeners
+  if (mainActionBtn) mainActionBtn.addEventListener('click', toggleSubButtons);
+  if (recordPaymentBtn) recordPaymentBtn.addEventListener('click', () => showPopup(paymentPopup));
+  if (recordExpenseBtn) recordExpenseBtn.addEventListener('click', () => showPopup(expensePopup));
+  
+  // Manejar clics fuera de los popups y botones flotantes
+  document.addEventListener('click', function(event) {
+    if (event.target.classList.contains('popup')) {
+      event.target.style.display = 'none';
+      recordPaymentBtn.classList.remove('show');
+      recordExpenseBtn.classList.remove('show');
+    } else if (!event.target.closest('#floating-menu')) {
+      recordPaymentBtn.classList.remove('show');
+      recordExpenseBtn.classList.remove('show');
+    }
+  });
+  
+  // Manejar botones de cerrar en los popups
+  document.querySelectorAll('.close').forEach(closeBtn => {
+    closeBtn.onclick = function() {
+      this.closest('.popup').style.display = 'none';
+    }
+  });
+  
+  // Asegurar que los formularios dentro de los popups funcionen correctamente
+  if (studentPaymentFormPopup) {
+    studentPaymentFormPopup.addEventListener('submit', recordStudentPayment);
+  }
+  
+  if (expenseRecordFormPopup) {
+    expenseRecordFormPopup.addEventListener('submit', recordExpense);
+  }
+  
+  // Evento de redimensionamiento de la ventana
+  window.addEventListener('resize', function() {
     if (incomeChart) updateIncomeChart(lastMonthlyIncomeData);
     if (expenseChart) updateExpenseChart(lastMonthlyExpenseData);
-});
+  });
+  
+  // Inicialización de la aplicación
+  window.onload = function() {
+    initApp();
+    // La inicialización de los botones flotantes ya está incluida en los event listeners anteriores
+  };
+
