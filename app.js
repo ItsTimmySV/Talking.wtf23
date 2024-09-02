@@ -7,8 +7,7 @@ const firebaseConfig = {
     storageBucket: "languageacademy-b830a.appspot.com",
     messagingSenderId: "849632826608",
     appId: "1:849632826608:web:7290467ebe776f473e1e35"
-  };
-
+};
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -32,7 +31,9 @@ const downloadHistoryBtn = document.getElementById('downloadHistoryBtn');
 
 // Update income chart
 let incomeChart;
+let lastMonthlyIncomeData = {};
 function updateIncomeChart(monthlyIncome) {
+    lastMonthlyIncomeData = monthlyIncome;
     const ctx = document.getElementById('monthlyIncomeChart');
     if (!ctx) {
         console.error('Canvas element not found');
@@ -43,8 +44,10 @@ function updateIncomeChart(monthlyIncome) {
         incomeChart.destroy();
     }
 
+    const chartType = window.innerWidth < 480 ? 'line' : 'bar';
+
     incomeChart = new Chart(ctx, {
-        type: 'bar',
+        type: chartType,
         data: {
             labels: Object.keys(monthlyIncome),
             datasets: [{
@@ -56,25 +59,36 @@ function updateIncomeChart(monthlyIncome) {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1,
             scales: {
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
                         text: 'Income ($)'
+                    },
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return '$' + value;
+                        }
                     }
                 },
                 x: {
                     title: {
                         display: true,
                         text: 'Month'
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
                     }
                 }
             },
-            responsive: true,
             plugins: {
                 legend: {
-                    position: 'top',
+                    display: false,
                 },
                 title: {
                     display: true,
@@ -497,8 +511,9 @@ window.onload = initApp;
 
 
 let expenseChart;
-
+let lastMonthlyExpenseData = {};
 function updateExpenseChart(monthlyExpenses) {
+    lastMonthlyExpenseData = monthlyExpenses;
     const ctx = document.getElementById('monthlyExpenseChart');
     if (!ctx) {
         console.error('Canvas element not found');
@@ -509,8 +524,10 @@ function updateExpenseChart(monthlyExpenses) {
         expenseChart.destroy();
     }
 
+    const chartType = window.innerWidth < 480 ? 'line' : 'bar';
+
     expenseChart = new Chart(ctx, {
-        type: 'bar',
+        type: chartType,
         data: {
             labels: Object.keys(monthlyExpenses),
             datasets: [{
@@ -522,25 +539,36 @@ function updateExpenseChart(monthlyExpenses) {
             }]
         },
         options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            aspectRatio: 1,
             scales: {
                 y: {
                     beginAtZero: true,
                     title: {
                         display: true,
                         text: 'Expenses ($)'
+                    },
+                    ticks: {
+                        callback: function(value, index, values) {
+                            return '$' + value;
+                        }
                     }
                 },
                 x: {
                     title: {
                         display: true,
                         text: 'Month'
+                    },
+                    ticks: {
+                        maxRotation: 45,
+                        minRotation: 45
                     }
                 }
             },
-            responsive: true,
             plugins: {
                 legend: {
-                    position: 'top',
+                    display: false,
                 },
                 title: {
                     display: true,
@@ -583,3 +611,9 @@ function loadUserData() {
         });
     }
 }
+
+
+window.addEventListener('resize', function() {
+    if (incomeChart) updateIncomeChart(lastMonthlyIncomeData);
+    if (expenseChart) updateExpenseChart(lastMonthlyExpenseData);
+});
