@@ -349,6 +349,20 @@
   
     #paymentsList th, #paymentsList td {
       padding: 6px;
+
+          #incomeChart, #expenseChart {
+    position: relative;
+    height: 300px; /* Ajusta este valor según tus necesidades */
+    width: 100%;
+    max-width: 600px; /* Ajusta este valor según tus necesidades */
+    margin: 20px auto;
+}
+
+@media (max-width: 768px) {
+    #incomeChart, #expenseChart {
+        height: 250px; /* Altura más pequeña para dispositivos móviles */
+    }
+}
       font-size: 12px;
     }
   }
