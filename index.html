@@ -48,8 +48,10 @@
                 <h3>Total Balance</h3>
                 <p id="balanceAmount"></p>
             </div>
-            <div id="paymentForm">
-                <h3>Record Student Payment</h3>
+            <div id="payment-popup" class="popup">
+                <div class="popup-content">
+                  <span class="close">&times;</span>
+                  <h2>Record Student Payment</h2>
                 <form id="studentPaymentForm">
                     <div class="form-group">
                         <label for="studentName">Student Name:</label>
@@ -83,11 +85,13 @@
                     </div>
                     <button type="submit" class="btn">Record Payment</button>
                 </form>
-                
+            </div>
             </div>
 
-            <div id="expenseForm">
-                <h3>Record Expense</h3>
+            <div id="expense-popup" class="popup">
+                <div class="popup-content">
+                  <span class="close">&times;</span>
+                  <h2>Record Expense</h2>
                 <form id="expenseRecordForm">
                     <div class="form-group">
                         <label for="expenseType">Expense Type:</label>
@@ -104,6 +108,7 @@
                     <button type="submit" class="btn">Record Expense</button>
                 </form>
             </div>
+        </div>
 
             <div id="paymentsList">
                 <h3>Payment Records</h3>
@@ -147,6 +152,14 @@
             <button id="downloadHistoryBtn" class="btn">Download PDF and Send via WhatsApp</button>
         </div>
     </div>
+
+    <div id="floating-menu">
+        <button id="main-action-btn" class="floating-btn main-btn">+</button>
+        <button id="record-payment-btn" class="floating-btn sub-btn">💰</button>
+        <button id="record-expense-btn" class="floating-btn sub-btn">💸</button>
+      </div>
+
+
 
     <script src="app.js"></script>
 </body>
